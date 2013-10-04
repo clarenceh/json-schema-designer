@@ -9,6 +9,8 @@ angular.module('jsonSchemaDesignerApp')
             'Karma'
         ];
 
+        $scope.jsonObjArray = [];
+
         var canvas = new fabric.Canvas('c');
 
         $scope.handleDblClick = function($event) {
@@ -43,9 +45,23 @@ angular.module('jsonSchemaDesignerApp')
                 top: clickPosY
             });
 
-            jsonSchemaObj.group = group;
+            //jsonSchemaObj.group = group;
+            group.jsonSchemaObj = jsonSchemaObj;
 
+            // Push the new object into the object array
+            $scope.jsonObjArray.push(jsonSchemaObj);
+
+            $log.info('No of objects: ' + $scope.jsonObjArray.length);
             canvas.add(group);
         }
+
+        canvas.on('object:selected', function(options){
+
+            var selectedShape = options.target;
+
+            $log.info('An object was selected: ' + selectedShape.type);
+
+            $log.info('Selected object name: ' + selectedShape.jsonSchemaObj.name);
+        });
 
     });
