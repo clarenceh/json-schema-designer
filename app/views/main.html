@@ -1,6 +1,6 @@
 <!-- Palette Bar -->
 <div class="row">
-    <div class="cols-md-12">
+    <div class="col-md-12">
         <nav class="navbar navbar-default" role="navigation">
             <div class="navbar-header">
                 <span class="navbar-brand">Palette</span>
@@ -21,13 +21,24 @@
 </div>
 
 <!-- Canvas Area -->
-<div id="canvasArea" class="row well">
-    <div class="cols-md-12">
+<div id="canvasArea" class="row">
+    <div class="col-md-9">
         <canvas id="c" height="500px" width="500px" ng-dblclick="handleDblClick($event)">
             Your browser doesn't support HTML5 Canvas
         </canvas>
     </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Selected Object</div>
+        </div>
+        <div class="panel-body">
+            <form role="form">
+                <button type="button" class="btn btn-default" ng-click="addObjAttr()">Click me</button>
+            </form>
+        </div>
+    </div>
 </div>
+
 
 <!-- Modal for add new JSON schema object -->
 <div class="modal fade" id="addSchemaObjModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -52,3 +63,5 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+

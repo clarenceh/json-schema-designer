@@ -6,6 +6,8 @@
 
 function JsonSchemaObj() {
 
+    this.objAttrs = [];
+
 };
 
 function JsonSchemaAttr() {

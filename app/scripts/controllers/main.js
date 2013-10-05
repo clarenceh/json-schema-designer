@@ -4,6 +4,7 @@ angular.module('jsonSchemaDesignerApp')
     .controller('MainCtrl', function ($scope, $log) {
 
         $scope.jsonObjArray = [];
+        $scope.shapeArray = [];
         $scope.objName = '';
         var dblClickPos = {posX: 0, posY: 0};
 
@@ -17,11 +18,13 @@ angular.module('jsonSchemaDesignerApp')
         var canvas = new fabric.Canvas('c', { selection: false });
 
         // Draw a grid on Canvas
+        /*
         var grid = 50;
         for (var i = 0; i < (500 / grid); i++) {
             canvas.add(new fabric.Line([ i * grid, 0, i * grid, 500], { stroke: '#ccc', selectable: false }));
             canvas.add(new fabric.Line([ 0, i * grid, 500, i * grid], { stroke: '#ccc', selectable: false }))
         }
+        */
 
         $scope.handleDblClick = function($event) {
             $log.info('Double click was detected at X: ' + $event.pageX + ' and Y: ' + $event.pageY);
@@ -59,7 +62,9 @@ angular.module('jsonSchemaDesignerApp')
                 var rect = new fabric.Rect({
                     fill: '#eef',
                     width: 150,
-                    height: 30
+                    height: 30,
+                    strokeWidth: 1,
+                    stroke: 'black'
                 });
 
                 var group = new fabric.Group([rect, text], {
@@ -73,6 +78,9 @@ angular.module('jsonSchemaDesignerApp')
                 // Push the new object into the object array
                 $scope.jsonObjArray.push(jsonSchemaObj);
 
+                // Add the shape into the shape array
+                $scope.shapeArray.push(group);
+
                 $log.info('No of objects: ' + $scope.jsonObjArray.length);
                 canvas.add(group);
 
@@ -82,11 +90,52 @@ angular.module('jsonSchemaDesignerApp')
 
         canvas.on('object:selected', function(options){
 
-            var selectedShape = options.target;
+            $scope.selectedShape = options.target;
+            $scope.selectedSchemaObj = $scope.selectedShape.jsonSchemaObj;
 
-            $log.info('An object was selected: ' + selectedShape.type);
+            $log.info('An object was selected: ' + $scope.selectedShape.type);
 
-            $log.info('Selected object name: ' + selectedShape.jsonSchemaObj.name);
+            $log.info('Selected object name: ' + $scope.selectedSchemaObj.name);
+
         });
+
+        $scope.addObjAttr = function() {
+            $log.info('Adding object attribute to object: ' + $scope.selectedSchemaObj.name);
+
+            $log.info('Selected object at left: ' + $scope.selectedShape.getLeft() + ' and top: ' + $scope.selectedShape.getTop());
+
+            var objAttr = new JsonSchemaAttr();
+
+            // Calculate number of cells in the selected shape
+            var noOfCells = $scope.selectedSchemaObj.objAttrs.length;
+            $log.info('No. of attributes for selected object: ' + noOfCells);
+            var topOffset = 30 + (15 * noOfCells);
+            $log.info('Adding cell at top offset: ' + topOffset);
+            var cellTop = $scope.selectedShape.getTop() + topOffset;
+            $log.info('Adding cell at top position: ' + cellTop);
+
+            $scope.selectedSchemaObj.objAttrs.push(objAttr);
+
+            // Add attribute to selected shape
+            var rect = new fabric.Rect({
+                fill: 'green',
+                width: 150,
+                height: 30,
+                strokeWidth: 1,
+                stroke: 'black',
+                top: cellTop,
+                left: $scope.selectedShape.getLeft()
+            });
+
+            $scope.selectedShape.addWithUpdate(rect);
+
+            $log.info('Attr added to object');
+
+            canvas.clear().renderAll();
+
+            $scope.shapeArray.forEach(function(element){
+                canvas.add(element);
+            });
+        }
 
     });
