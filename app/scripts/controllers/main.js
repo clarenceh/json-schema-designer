@@ -3,12 +3,6 @@
 angular.module('jsonSchemaDesignerApp')
     .controller('MainCtrl', function ($scope, $log) {
 
-        $scope.awesomeThings = [
-            'HTML5 Boilerplate',
-            'AngularJS',
-            'Karma'
-        ];
-
         $scope.jsonObjArray = [];
         $scope.objName = '';
         var dblClickPos = {posX: 0, posY: 0};
@@ -20,7 +14,14 @@ angular.module('jsonSchemaDesignerApp')
             //$log.info('Obj name: ' + $scope.objName);
         });
 
-        var canvas = new fabric.Canvas('c');
+        var canvas = new fabric.Canvas('c', { selection: false });
+
+        // Draw a grid on Canvas
+        var grid = 50;
+        for (var i = 0; i < (500 / grid); i++) {
+            canvas.add(new fabric.Line([ i * grid, 0, i * grid, 500], { stroke: '#ccc', selectable: false }));
+            canvas.add(new fabric.Line([ 0, i * grid, 500, i * grid], { stroke: '#ccc', selectable: false }))
+        }
 
         $scope.handleDblClick = function($event) {
             $log.info('Double click was detected at X: ' + $event.pageX + ' and Y: ' + $event.pageY);
