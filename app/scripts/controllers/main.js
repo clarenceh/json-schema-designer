@@ -6,6 +6,7 @@ angular.module('jsonSchemaDesignerApp')
         $scope.jsonObjArray = [];
         $scope.shapeArray = [];
         $scope.objName = '';
+        $scope.selectedObjName = '';
         var dblClickPos = {posX: 0, posY: 0};
 
         // Modal dialog for add new JSON schema object
@@ -96,6 +97,8 @@ angular.module('jsonSchemaDesignerApp')
             $log.info('An object was selected: ' + $scope.selectedShape.type);
 
             $log.info('Selected object name: ' + $scope.selectedSchemaObj.name);
+            $scope.selectedObjName = $scope.selectedSchemaObj.name;
+            $scope.$apply();
 
         });
 
@@ -131,6 +134,23 @@ angular.module('jsonSchemaDesignerApp')
 
             $log.info('Attr added to object');
 
+            redrawCanvas();
+        };
+
+        $scope.objNameChanged = function() {
+            $log.info('Object name changed to: ' + $scope.selectedObjName);
+
+            $scope.selectedSchemaObj.name = $scope.selectedObjName;
+
+            $scope.selectedShape.item(1).set({
+                text: $scope.selectedObjName
+            });
+
+            $log.info('Redraw canvas');
+            redrawCanvas();
+        }
+
+        function redrawCanvas() {
             canvas.clear().renderAll();
 
             $scope.shapeArray.forEach(function(element){

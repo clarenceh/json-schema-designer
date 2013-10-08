@@ -22,19 +22,47 @@
 
 <!-- Canvas Area -->
 <div id="canvasArea" class="row">
-    <div class="col-md-9">
+    <div class="col-md-8">
         <canvas id="c" height="500px" width="500px" ng-dblclick="handleDblClick($event)">
             Your browser doesn't support HTML5 Canvas
         </canvas>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">Selected Object</div>
-        </div>
-        <div class="panel-body">
-            <form role="form">
-                <button type="button" class="btn btn-default" ng-click="addObjAttr()">Click me</button>
-            </form>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="objNameText" class="col-lg-2 control-label">Name</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="objNameText" ng-model="selectedObjName" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <button type="button" class="btn btn-primary btn-sm" ng-click="objNameChanged()">OK</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-6 control-label">Attributes</label>
+                        <div class="col-lg-6">
+                            <button type="button" class="btn btn-default" ng-click="addObjAttr()">Add</button></td>
+                        </div>
+                    </div>
+                </form>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Attribute Name</td>
+                            <td>Type</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>firstName</td>
+                        <td>String</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </div>
